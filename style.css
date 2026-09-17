@@ -1,0 +1,894 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f8fa;
+    color: #17202a;
+    line-height: 1.6;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* =========================
+   TOP NAVIGATION
+========================= */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 5%;
+
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid #e5e7eb;
+    backdrop-filter: blur(10px);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.logo-mark {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #17202a;
+    color: white;
+
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    gap: 28px;
+}
+
+nav a {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+nav a:hover {
+    color: #17202a;
+}
+
+.top-actions {
+    display: flex;
+    gap: 10px;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.primary-btn,
+.secondary-btn,
+.login-btn {
+    border-radius: 8px;
+    padding: 11px 18px;
+    border: none;
+    font-weight: 700;
+}
+
+.primary-btn {
+    background: #17202a;
+    color: white;
+}
+
+.primary-btn:hover {
+    opacity: 0.9;
+}
+
+.secondary-btn {
+    background: white;
+    color: #17202a;
+    border: 1px solid #d9dde3;
+}
+
+.login-btn {
+    background: transparent;
+    color: #17202a;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 650px;
+
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 50px;
+    align-items: center;
+
+    padding: 80px 7%;
+
+    background: white;
+}
+
+.hero-content {
+    max-width: 700px;
+}
+
+.eyebrow {
+    display: inline-block;
+
+    margin-bottom: 15px;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+
+    color: #667085;
+}
+
+.hero h1 {
+    margin: 0;
+
+    font-size: clamp(42px, 6vw, 72px);
+    line-height: 1.05;
+}
+
+.hero h1 span {
+    display: block;
+    color: #4b5563;
+}
+
+.hero p {
+    max-width: 650px;
+
+    margin: 25px 0;
+
+    font-size: 18px;
+    color: #667085;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.hero-panel {
+    display: flex;
+    justify-content: center;
+}
+
+.ai-window {
+    width: 100%;
+    max-width: 430px;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    background: #17202a;
+    color: white;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+}
+
+.ai-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding-bottom: 15px;
+
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.ai-header span {
+    margin-left: auto;
+    font-size: 12px;
+    color: #b8c0ca;
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #36c275;
+}
+
+.ai-message {
+    margin: 25px 0;
+
+    padding: 18px;
+
+    border-radius: 12px;
+
+    background: rgba(255,255,255,0.08);
+}
+
+.ai-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.ai-options button {
+    padding: 11px;
+
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+
+    background: rgba(255,255,255,0.06);
+    color: white;
+}
+
+
+/* =========================
+   GENERAL SECTIONS
+========================= */
+
+.section {
+    padding: 90px 7%;
+}
+
+.section-heading {
+    max-width: 750px;
+    margin-bottom: 45px;
+}
+
+.section-heading h2 {
+    margin: 0 0 15px;
+
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.15;
+}
+
+.section-heading p {
+    color: #667085;
+}
+
+
+/* =========================
+   PLATFORM
+========================= */
+
+.platform-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.platform-card {
+    padding: 28px;
+
+    min-height: 260px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    background: white;
+}
+
+.platform-card.featured {
+    border-color: #17202a;
+}
+
+.icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.platform-card h3 {
+    margin: 0 0 10px;
+}
+
+.platform-card p {
+    color: #667085;
+    min-height: 75px;
+}
+
+.platform-card button {
+    margin-top: 15px;
+    padding: 9px 13px;
+
+    border: 1px solid #d9dde3;
+    border-radius: 7px;
+
+    background: white;
+}
+
+
+/* =========================
+   TELEGRAM
+========================= */
+
+.telegram-section {
+    background: #f1f3f5;
+}
+
+.telegram-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 20px;
+}
+
+.telegram-sidebar {
+    padding: 18px;
+
+    border-radius: 14px;
+
+    background: #17202a;
+    color: white;
+}
+
+.group-title {
+    padding: 10px;
+
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #aeb6c1;
+}
+
+.telegram-menu {
+    display: block;
+    width: 100%;
+
+    margin: 4px 0;
+    padding: 11px;
+
+    text-align: left;
+
+    border: none;
+    border-radius: 7px;
+
+    background: transparent;
+    color: #d8dee6;
+}
+
+.telegram-menu:hover,
+.telegram-menu.active {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.telegram-content {
+    min-height: 600px;
+
+    padding: 30px;
+
+    border-radius: 14px;
+
+    background: white;
+    border: 1px solid #e5e7eb;
+}
+
+.tg-page {
+    display: none;
+}
+
+.tg-page.active {
+    display: block;
+}
+
+.tg-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 30px;
+}
+
+.tg-title-row h3,
+.tg-page h3 {
+    margin-top: 0;
+    font-size: 26px;
+}
+
+.page-description {
+    color: #667085;
+}
+
+.group-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding: 20px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.group-avatar {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #17202a;
+    color: white;
+
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.group-info {
+    flex: 1;
+}
+
+.group-info h4 {
+    margin: 0;
+}
+
+.group-info p {
+    margin: 5px 0;
+    color: #667085;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 12px;
+    color: #667085;
+}
+
+
+/* =========================
+   TELEGRAM SETTINGS
+========================= */
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.setting-card {
+    position: relative;
+
+    padding: 22px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.setting-card h4 {
+    margin-top: 0;
+}
+
+.setting-card p {
+    color: #667085;
+}
+
+.setting-card button {
+    padding: 8px 13px;
+
+    border: 1px solid #d9dde3;
+    border-radius: 7px;
+
+    background: white;
+}
+
+.switch {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+}
+
+.switch input {
+    display: none;
+}
+
+.switch span {
+    display: block;
+
+    width: 45px;
+    height: 24px;
+
+    border-radius: 20px;
+
+    background: #d1d5db;
+}
+
+.switch input:checked + span {
+    background: #17202a;
+}
+
+
+/* =========================
+   SETTINGS LIST
+========================= */
+
+.settings-list {
+    display: grid;
+    gap: 10px;
+}
+
+.settings-list div {
+    display: flex;
+    flex-direction: column;
+
+    padding: 18px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.settings-list span {
+    color: #667085;
+    font-size: 14px;
+}
+
+
+/* =========================
+   COMMANDS
+========================= */
+
+.command-box {
+    display: grid;
+    grid-template-columns: 130px 1fr auto;
+    align-items: center;
+    gap: 15px;
+
+    padding: 15px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.command-box code {
+    font-weight: bold;
+}
+
+.command-box button {
+    padding: 7px 12px;
+
+    border: 1px solid #d9dde3;
+    border-radius: 6px;
+
+    background: white;
+}
+
+
+/* =========================
+   POST WIZARD
+========================= */
+
+.wizard-box {
+    padding: 20px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.wizard-box textarea {
+    width: 100%;
+    min-height: 160px;
+
+    padding: 15px;
+
+    border: 1px solid #d9dde3;
+    border-radius: 8px;
+
+    resize: vertical;
+}
+
+.wizard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin: 15px 0;
+}
+
+.wizard-actions button {
+    padding: 8px 12px;
+
+    border: 1px solid #d9dde3;
+    border-radius: 7px;
+
+    background: white;
+}
+
+
+/* =========================
+   BUTTON BUILDER
+========================= */
+
+.button-builder {
+    display: grid;
+    gap: 12px;
+
+    max-width: 600px;
+}
+
+.button-builder input {
+    padding: 13px;
+
+    border: 1px solid #d9dde3;
+    border-radius: 8px;
+}
+
+
+/* =========================
+   STATISTICS
+========================= */
+
+.statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.statistics-grid div {
+    padding: 25px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    text-align: center;
+}
+
+.statistics-grid strong {
+    display: block;
+    font-size: 32px;
+}
+
+.statistics-grid span {
+    color: #667085;
+}
+
+
+/* =========================
+   SERVICES
+========================= */
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.service-card {
+    padding: 25px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+
+    background: white;
+}
+
+.service-card > div {
+    font-size: 30px;
+}
+
+.service-card h3 {
+    margin-bottom: 8px;
+}
+
+.service-card p {
+    min-height: 70px;
+    color: #667085;
+}
+
+.service-card button {
+    padding: 8px 12px;
+
+    border: 1px solid #d9dde3;
+    border-radius: 7px;
+
+    background: white;
+}
+
+
+/* =========================
+   COMMUNITY
+========================= */
+
+.community-section {
+    padding: 100px 7%;
+
+    background: #17202a;
+    color: white;
+}
+
+.community-section p {
+    max-width: 700px;
+    color: #c5cbd3;
+}
+
+
+/* =========================
+   ABOUT
+========================= */
+
+.about-section {
+    background: white;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    padding: 50px 7% 25px;
+
+    background: #10161c;
+    color: white;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+}
+
+.footer-content h4 {
+    margin-bottom: 10px;
+}
+
+.footer-content a {
+    display: block;
+
+    margin: 6px 0;
+
+    color: #aeb6c1;
+}
+
+.footer-content p {
+    color: #aeb6c1;
+}
+
+.copyright {
+    margin-top: 40px;
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(255,255,255,0.1);
+
+    color: #8d96a1;
+    font-size: 13px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1000px) {
+
+    nav {
+        display: none;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+    }
+
+    .platform-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .service-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .telegram-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .telegram-sidebar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+    }
+
+    .group-title {
+        grid-column: 1 / -1;
+    }
+
+    .statistics-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .topbar {
+        padding: 12px 18px;
+    }
+
+    .top-actions .login-btn {
+        display: none;
+    }
+
+    .hero {
+        padding: 60px 20px;
+    }
+
+    .section {
+        padding: 60px 20px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .platform-grid,
+    .service-grid,
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .telegram-content {
+        padding: 20px;
+    }
+
+    .telegram-sidebar {
+        grid-template-columns: 1fr;
+    }
+
+    .tg-title-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .group-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .command-box {
+        grid-template-columns: 1fr;
+    }
+
+    .statistics-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+      }
