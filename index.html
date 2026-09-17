@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Racaal | AI & Community Platform</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- TOP NAVIGATION -->
+    <header class="topbar">
+
+        <div class="logo">
+            <span class="logo-mark">R</span>
+            <span>RACAAL</span>
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#platform">Platform</a>
+            <a href="#community">Community</a>
+            <a href="#about">About</a>
+        </nav>
+
+        <div class="top-actions">
+            <button class="login-btn">Login</button>
+            <button class="primary-btn">Get Started</button>
+        </div>
+
+    </header>
+
+
+    <!-- HERO -->
+    <main id="home">
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <span class="eyebrow">COMMUNITY • TECHNOLOGY • AI</span>
+
+                <h1>
+                    One platform for
+                    <span>people, community and AI.</span>
+                </h1>
+
+                <p>
+                    Racaal brings AI, communication, community services,
+                    opportunities and digital tools together in one central
+                    platform.
+                </p>
+
+                <div class="hero-buttons">
+                    <button class="primary-btn">
+                        Explore Racaal
+                    </button>
+
+                    <button class="secondary-btn">
+                        Talk to AI
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="hero-panel">
+
+                <div class="ai-window">
+
+                    <div class="ai-header">
+                        <div class="status-dot"></div>
+                        <strong>Racaal AI</strong>
+                        <span>Online</span>
+                    </div>
+
+                    <div class="ai-message">
+                        Hello 👋
+                        <br><br>
+                        How can I help you today?
+                    </div>
+
+                    <div class="ai-options">
+                        <button>📖 Bible</button>
+                        <button>💼 Jobs</button>
+                        <button>❤️ Love</button>
+                        <button>🔎 Search</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PLATFORM -->
+        <section id="platform" class="section">
+
+            <div class="section-heading">
+
+                <span class="eyebrow">ONE CENTRAL PLATFORM</span>
+
+                <h2>
+                    Everything connected in one place.
+                </h2>
+
+                <p>
+                    Racaal is being designed as a central platform where
+                    services, AI and communication channels can work together.
+                </p>
+
+            </div>
+
+            <div class="platform-grid">
+
+                <div class="platform-card featured">
+                    <div class="icon">🤖</div>
+                    <h3>AI Assistant</h3>
+                    <p>
+                        Central AI for questions, knowledge, assistance,
+                        memory and customized experiences.
+                    </p>
+                    <button>Open AI</button>
+                </div>
+
+                <div class="platform-card">
+                    <div class="icon">📱</div>
+                    <h3>Telegram</h3>
+                    <p>
+                        Manage Telegram bots, groups, AI settings,
+                        commands, posts and automation.
+                    </p>
+                    <button onclick="openSection('telegram')">
+                        Manage Telegram
+                    </button>
+                </div>
+
+                <div class="platform-card">
+                    <div class="icon">💬</div>
+                    <h3>WhatsApp</h3>
+                    <p>
+                        Connect AI and Racaal services to WhatsApp.
+                    </p>
+                    <button>Coming Soon</button>
+                </div>
+
+                <div class="platform-card">
+                    <div class="icon">📘</div>
+                    <h3>Facebook</h3>
+                    <p>
+                        Connect community communication and AI services.
+                    </p>
+                    <button>Coming Soon</button>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TELEGRAM CENTER -->
+        <section id="telegram" class="section telegram-section">
+
+            <div class="section-heading">
+
+                <span class="eyebrow">TELEGRAM CONTROL CENTER</span>
+
+                <h2>
+                    Manage your Telegram groups from Racaal.
+                </h2>
+
+                <p>
+                    Connect a Telegram group and manage its AI, commands,
+                    announcements, scheduling, posts, buttons and protection
+                    from one central control center.
+                </p>
+
+            </div>
+
+
+            <div class="telegram-layout">
+
+                <!-- SIDEBAR -->
+                <aside class="telegram-sidebar">
+
+                    <div class="group-title">
+                        <span>MY TELEGRAM</span>
+                    </div>
+
+                    <button class="telegram-menu active"
+                            onclick="showTelegram('groups')">
+                        👥 My Groups
+                    </button>
+
+                    <button class="telegram-menu"
+                            onclick="showTelegram('ai')">
+                        🤖 AI Customized Group
+                    </button>
+
+                    <button class="telegram-menu"
+                            onclick="showTelegram('settings')">
+                        ⚙️ Group Settings
+                    </button>
+
+                    <button class="telegram-menu"
+                            onclick="showTelegram('commands')">
+                        💬 Commands
+                    </button>
+
+                    <button class="telegram-menu"
+                            onclick="showTelegram('announcements')">
+                        📢 Announcements
+                    </button>
+
+                    <button class="telegram-menu"
+                            onclick="showTelegram('schedule')">
+                        📅 Scheduling
+                    </button>
+
+                    <button class="telegram-menu"
+                            onclick="showTelegram('post')">
+                        📝 Post Wizard
+                    </button>
+
+                    <button class="telegram-menu"
+                            onclick="showTelegram('buttons')">
+                        🔘 Buttons
+                    </button>
+
+                    <button class="telegram-menu"
+                            onclick="showTelegram('comments')">
+                        💭 Comments
+                    </button>
+
+                    <button class="telegram-menu"
+                            onclick="showTelegram('members')">
+                        👥 Members
+                    </button>
+
+                    <button class="telegram-menu"
+                            onclick="showTelegram('statistics')">
+                        📊 Statistics
+                    </button>
+
+                </aside>
+
+
+                <!-- TELEGRAM CONTENT -->
+                <div class="telegram-content">
+
+                    <!-- GROUPS -->
+                    <div id="tg-groups" class="tg-page active">
+
+                        <div class="tg-title-row">
+
+                            <div>
+                                <h3>My Telegram Groups</h3>
+                                <p>
+                                    Connect and manage your Telegram groups.
+                                </p>
+                            </div>
+
+                            <button class="primary-btn">
+                                + Add Group
+                            </button>
+
+                        </div>
+
+
+                        <div class="group-card">
+
+                            <div class="group-avatar">G</div>
+
+                            <div class="group-info">
+
+                                <h4>Telegram Group</h4>
+
+                                <p>
+                                    Your connected Telegram group will
+                                    appear here.
+                                </p>
+
+                                <div class="status">
+                                    <span class="status-dot"></span>
+                                    Ready to connect
+                                </div>
+
+                            </div>
+
+                            <button class="secondary-btn">
+                                Manage
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- AI -->
+                    <div id="tg-ai" class="tg-page">
+
+                        <h3>🤖 AI Customized Group</h3>
+
+                        <p class="page-description">
+                            Customize how Racaal AI behaves inside each
+                            Telegram group.
+                        </p>
+
+                        <div class="settings-grid">
+
+                            <div class="setting-card">
+                                <h4>AI Assistant</h4>
+                                <p>Allow members to ask the AI questions.</p>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span></span>
+                                </label>
+                            </div>
+
+                            <div class="setting-card">
+                                <h4>AI Knowledge</h4>
+                                <p>Choose the knowledge available to the AI.</p>
+                                <button>Configure</button>
+                            </div>
+
+                            <div class="setting-card">
+                                <h4>AI Personality</h4>
+                                <p>Customize the assistant's response style.</p>
+                                <button>Customize</button>
+                            </div>
+
+                            <div class="setting-card">
+                                <h4>AI Memory</h4>
+                                <p>Configure group memory and context.</p>
+                                <button>Configure</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SETTINGS -->
+                    <div id="tg-settings" class="tg-page">
+
+                        <h3>⚙️ Group Settings</h3>
+
+                        <div class="settings-list">
+
+                            <div>
+                                <strong>Welcome Messages</strong>
+                                <span>Manage new-member greetings.</span>
+                            </div>
+
+                            <div>
+                                <strong>Rules</strong>
+                                <span>Configure group rules.</span>
+                            </div>
+
+                            <div>
+                                <strong>Photo Verification</strong>
+                                <span>Configure member verification.</span>
+                            </div>
+
+                            <div>
+                                <strong>Protection</strong>
+                                <span>Manage anti-spam and protection.</span>
+                            </div>
+
+                            <div>
+                                <strong>Member Management</strong>
+                                <span>Manage group member controls.</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- COMMANDS -->
+                    <div id="tg-commands" class="tg-page">
+
+                        <h3>💬 Command Settings</h3>
+
+                        <p>
+                            Configure which commands are available in
+                            the connected Telegram group.
+                        </p>
+
+                        <div class="command-box">
+                            <code>/start</code>
+                            <span>Start the bot</span>
+                            <button>Configure</button>
+                        </div>
+
+                        <div class="command-box">
+                            <code>/help</code>
+                            <span>Show help</span>
+                            <button>Configure</button>
+                        </div>
+
+                        <div class="command-box">
+                            <code>/bible</code>
+                            <span>Bible features</span>
+                            <button>Configure</button>
+                        </div>
+
+                    </div>
+
+
+                    <!-- ANNOUNCEMENTS -->
+                    <div id="tg-announcements" class="tg-page">
+
+                        <h3>📢 Announcements</h3>
+
+                        <p>
+                            Create and manage announcements for your
+                            connected Telegram groups.
+                        </p>
+
+                        <button class="primary-btn">
+                            Create Announcement
+                        </button>
+
+                    </div>
+
+
+                    <!-- SCHEDULING -->
+                    <div id="tg-schedule" class="tg-page">
+
+                        <h3>📅 Scheduling</h3>
+
+                        <p>
+                            Schedule messages, Bible posts, announcements
+                            and other automated content.
+                        </p>
+
+                        <button class="primary-btn">
+                            Create Schedule
+                        </button>
+
+                    </div>
+
+
+                    <!-- POST WIZARD -->
+                    <div id="tg-post" class="tg-page">
+
+                        <h3>📝 Post Wizard</h3>
+
+                        <p>
+                            Create a Telegram post with text, media,
+                            links and interactive elements.
+                        </p>
+
+                        <div class="wizard-box">
+
+                            <textarea
+                                placeholder="Write your post here...">
+                            </textarea>
+
+                            <div class="wizard-actions">
+                                <button>Add Photo</button>
+                                <button>Add URL</button>
+                                <button>Add Button</button>
+                                <button>Add Comments</button>
+                            </div>
+
+                            <button class="primary-btn">
+                                Preview Post
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+                    <div id="tg-buttons" class="tg-page">
+
+                        <h3>🔘 Button Builder</h3>
+
+                        <p>
+                            Create buttons for Telegram posts and messages.
+                        </p>
+
+                        <div class="button-builder">
+
+                            <input
+                                type="text"
+                                placeholder="Button text">
+
+                            <input
+                                type="text"
+                                placeholder="Button URL">
+
+                            <button class="primary-btn">
+                                Add Button
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- COMMENTS -->
+                    <div id="tg-comments" class="tg-page">
+
+                        <h3>💭 Comments</h3>
+
+                        <p>
+                            Configure comments and discussion features
+                            for supported Telegram posts.
+                        </p>
+
+                        <button class="primary-btn">
+                            Configure Comments
+                        </button>
+
+                    </div>
+
+
+                    <!-- MEMBERS -->
+                    <div id="tg-members" class="tg-page">
+
+                        <h3>👥 Members</h3>
+
+                        <p>
+                            View and manage members of connected groups.
+                        </p>
+
+                        <div class="empty-state">
+                            Member information will appear after a
+                            Telegram group is connected.
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATISTICS -->
+                    <div id="tg-statistics" class="tg-page">
+
+                        <h3>📊 Statistics</h3>
+
+                        <div class="statistics-grid">
+
+                            <div>
+                                <strong>0</strong>
+                                <span>Members</span>
+                            </div>
+
+                            <div>
+                                <strong>0</strong>
+                                <span>AI Questions</span>
+                            </div>
+
+                            <div>
+                                <strong>0</strong>
+                                <span>Posts</span>
+                            </div>
+
+                            <div>
+                                <strong>0</strong>
+                                <span>Scheduled</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SERVICES -->
+        <section id="services" class="section">
+
+            <div class="section-heading">
+
+                <span class="eyebrow">RACAAL SERVICES</span>
+
+                <h2>Services and opportunities.</h2>
+
+                <p>
+                    These areas will gradually become real working modules
+                    connected to the central Racaal system.
+                </p>
+
+            </div>
+
+            <div class="service-grid">
+
+                <div class="service-card">
+                    <div>❤️</div>
+                    <h3>Love & Marriage</h3>
+                    <p>Connections, relationships and marriage services.</p>
+                    <button>Coming Soon</button>
+                </div>
+
+                <div class="service-card">
+                    <div>💼</div>
+                    <h3>Jobs</h3>
+                    <p>Job opportunities, applications and connections.</p>
+                    <button>Coming Soon</button>
+                </div>
+
+                <div class="service-card">
+                    <div>🔎</div>
+                    <h3>Local Search</h3>
+                    <p>Find useful services, places, people and opportunities.</p>
+                    <button>Coming Soon</button>
+                </div>
+
+                <div class="service-card">
+                    <div>🛠️</div>
+                    <h3>Services</h3>
+                    <p>Connect people with local businesses and service providers.</p>
+                    <button>Coming Soon</button>
+                </div>
+
+                <div class="service-card">
+                    <div>👥</div>
+                    <h3>Community</h3>
+                    <p>Community programs, projects, members and activities.</p>
+                    <button>Coming Soon</button>
+                </div>
+
+                <div class="service-card">
+                    <di
