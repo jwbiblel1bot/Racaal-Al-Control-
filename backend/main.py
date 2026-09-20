@@ -3,9 +3,28 @@ import logging
 from copy import deepcopy
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from supabase import create_client, Client
 
 app = Flask(__name__)
+
+
+# ============================================================
+# CORS
+# ============================================================
+
+CORS(
+    app,
+    resources={
+        r"/control/*": {
+            "origins": "https://racaal-control-center.onrender.com"
+        },
+        r"/health": {
+            "origins": "https://racaal-control-center.onrender.com"
+        }
+    }
+)
+
 
 # ============================================================
 # LOGGING
@@ -395,4 +414,4 @@ if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
         port=port
-)
+    )
