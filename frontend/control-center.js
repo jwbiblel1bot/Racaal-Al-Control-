@@ -52,6 +52,7 @@ const inputs = [
 let currentSettings = {};
 let isSaving = false;
 let isLoading = false;
+let isLoadingTelegramGroups = false;
 
 
 /* =========================================================
@@ -64,12 +65,15 @@ function pathParts(path) {
 
 
 function setNested(obj, path, value) {
+
   const parts = pathParts(path);
 
   let cur = obj;
 
   for (let i = 0; i < parts.length - 1; i++) {
+
     cur[parts[i]] ??= {};
+
     cur = cur[parts[i]];
   }
 
@@ -78,6 +82,7 @@ function setNested(obj, path, value) {
 
 
 function getNested(obj, path) {
+
   return pathParts(path).reduce(
     (value, key) => value?.[key],
     obj
@@ -92,6 +97,7 @@ function getNested(obj, path) {
 function showMessage(text, error = false) {
 
   if (!messageBox) {
+
     console.log(
       error ? "RACAAL ERROR:" : "RACAAL:",
       text
@@ -132,6 +138,7 @@ function setButtonBusy(button, busy, busyText) {
   if (busy) {
 
     if (!button.dataset.originalText) {
+
       button.dataset.originalText =
         button.textContent;
     }
@@ -139,7 +146,9 @@ function setButtonBusy(button, busy, busyText) {
     button.disabled = true;
 
     if (busyText) {
-      button.textContent = busyText;
+
+      button.textContent =
+        busyText;
     }
 
   } else {
@@ -147,6 +156,7 @@ function setButtonBusy(button, busy, busyText) {
     button.disabled = false;
 
     if (button.dataset.originalText) {
+
       button.textContent =
         button.dataset.originalText;
     }
@@ -174,10 +184,13 @@ async function apiRequest(
 
   const response =
     await fetch(url, {
+
       ...options,
 
       headers: {
-        "Accept": "application/json",
+
+        "Accept":
+          "application/json",
 
         ...(options.body
           ? {
@@ -217,7 +230,6 @@ async function apiRequest(
       data = {
         raw: responseText
       };
-
     }
   }
 
@@ -245,6 +257,7 @@ async function apiRequest(
 function readValue(el) {
 
   if (el.type === "checkbox") {
+
     return el.checked;
   }
 
@@ -302,7 +315,8 @@ function writeValue(el, value) {
     value !== null
   ) {
 
-    el.value = value;
+    el.value =
+      value;
   }
 }
 
@@ -415,12 +429,689 @@ function updateGroupDisplay() {
 
 
 /* =========================================================
+   TELEGRAM GROUP LIST CONTAINER
+========================================================= */
+
+/*
+The frontend creates its own group-list container if the
+HTML does not already provide one.
+
+This means the existing control-center.html does not have
+to be destroyed or rewritten just to support My Telegram
+Groups.
+*/
+
+function getTelegramGroupsContainer() {
+
+  let container =
+    document.getElementById(
+      "telegramGroupsList"
+    );
+
+  if (container) {
+
+    return container;
+  }
+
+  container =
+    document.createElement(
+      "div"
+    );
+
+  container.id =
+    "telegramGroupsList";
+
+  container.style.marginTop =
+    "16px";
+
+  /*
+  Try to place the list near the existing
+  "My Telegram Groups" area.
+  */
+
+  const candidates = [
+    document.getElementById(
+      "myTelegramGroups"
+    ),
+    document.querySelector(
+      "[data-section='telegram-groups']"
+    ),
+    document.querySelector(
+      ".telegram-groups"
+    )
+  ];
+
+  const target =
+    candidates.find(
+      element => element
+    );
+
+  if (target) {
+
+    target.appendChild(
+      container
+    );
+
+  } else {
+
+    /*
+    Fallback: place it near the top of the
+    Control Center page.
+    */
+
+    const firstMain =
+      document.querySelector(
+        "main"
+      );
+
+    if (firstMain) {
+
+      firstMain.prepend(
+        container
+      );
+
+    } else {
+
+      document.body.prepend(
+        container
+      );
+    }
+  }
+
+  return container;
+}
+
+
+/* =========================================================
+   TELEGRAM GROUP LIST STYLING
+========================================================= */
+
+function ensureTelegramGroupsStyles() {
+
+  if (
+    document.getElementById(
+      "racaalTelegramGroupsStyles"
+    )
+  ) {
+
+    return;
+  }
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+  style.id =
+    "racaalTelegramGroupsStyles";
+
+  style.textContent = `
+
+    #telegramGroupsList {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .racaal-telegram-group-card {
+      border: 1px solid #d9dfe7;
+      border-radius: 12px;
+      padding: 16px;
+      background: #ffffff;
+      box-sizing: border-box;
+    }
+
+    .racaal-telegram-group-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .racaal-telegram-group-id {
+      font-size: 14px;
+      opacity: 0.75;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .racaal-telegram-group-status {
+      font-size: 13px;
+      margin-bottom: 12px;
+      opacity: 0.8;
+    }
+
+    .racaal-telegram-group-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .racaal-manage-group-button,
+    .racaal-refresh-groups-button {
+      cursor: pointer;
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: 14px;
+    }
+
+    .racaal-manage-group-button {
+      background: #111827;
+      color: #ffffff;
+    }
+
+    .racaal-refresh-groups-button {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .racaal-telegram-empty {
+      padding: 14px;
+      border-radius: 10px;
+      background: #f6f7f9;
+      color: #555;
+    }
+
+    .racaal-telegram-loading {
+      padding: 14px;
+      opacity: 0.75;
+    }
+
+  `;
+
+  document.head.appendChild(
+    style
+  );
+}
+
+
+/* =========================================================
+   TELEGRAM GROUP DATA NORMALIZATION
+========================================================= */
+
+/*
+The backend may return:
+
+{
+  "groups": [...]
+}
+
+or:
+
+{
+  "telegram_groups": [...]
+}
+
+or directly:
+
+[...]
+
+This helper makes the frontend tolerant of those formats.
+*/
+
+function normalizeTelegramGroups(data) {
+
+  if (Array.isArray(data)) {
+
+    return data;
+  }
+
+  if (
+    Array.isArray(
+      data?.groups
+    )
+  ) {
+
+    return data.groups;
+  }
+
+  if (
+    Array.isArray(
+      data?.telegram_groups
+    )
+  ) {
+
+    return data.telegram_groups;
+  }
+
+  if (
+    Array.isArray(
+      data?.registered_groups
+    )
+  ) {
+
+    return data.registered_groups;
+  }
+
+  return [];
+}
+
+
+/* =========================================================
+   TELEGRAM GROUP DISPLAY HELPERS
+========================================================= */
+
+function getTelegramGroupId(group) {
+
+  return String(
+    group?.group_id ??
+    group?.telegram_group_id ??
+    group?.id ??
+    ""
+  );
+}
+
+
+function getTelegramGroupName(group) {
+
+  return (
+    group?.group_name ??
+    group?.name ??
+    group?.title ??
+    group?.telegram_group_name ??
+    "Telegram Group"
+  );
+}
+
+
+function getTelegramGroupStatus(group) {
+
+  return (
+    group?.status ??
+    group?.connection_status ??
+    group?.state ??
+    "registered"
+  );
+}
+
+
+function getTelegramGroupRegisteredAt(group) {
+
+  return (
+    group?.registered_at ??
+    group?.created_at ??
+    ""
+  );
+}
+
+
+/* =========================================================
+   TELEGRAM GROUP LIST RENDERING
+========================================================= */
+
+function renderTelegramGroups(groups) {
+
+  ensureTelegramGroupsStyles();
+
+  const container =
+    getTelegramGroupsContainer();
+
+  container.innerHTML = "";
+
+  if (!groups.length) {
+
+    const empty =
+      document.createElement(
+        "div"
+      );
+
+    empty.className =
+      "racaal-telegram-empty";
+
+    empty.textContent =
+      "No Telegram groups connected yet.";
+
+    container.appendChild(
+      empty
+    );
+
+    return;
+  }
+
+  groups.forEach(group => {
+
+    const id =
+      getTelegramGroupId(
+        group
+      );
+
+    if (!id) {
+      return;
+    }
+
+    const name =
+      getTelegramGroupName(
+        group
+      );
+
+    const status =
+      getTelegramGroupStatus(
+        group
+      );
+
+    const registeredAt =
+      getTelegramGroupRegisteredAt(
+        group
+      );
+
+    const card =
+      document.createElement(
+        "div"
+      );
+
+    card.className =
+      "racaal-telegram-group-card";
+
+    const title =
+      document.createElement(
+        "div"
+      );
+
+    title.className =
+      "racaal-telegram-group-title";
+
+    title.textContent =
+      name;
+
+    const idElement =
+      document.createElement(
+        "div"
+      );
+
+    idElement.className =
+      "racaal-telegram-group-id";
+
+    idElement.textContent =
+      `Group ID: ${id}`;
+
+    const statusElement =
+      document.createElement(
+        "div"
+      );
+
+    statusElement.className =
+      "racaal-telegram-group-status";
+
+    statusElement.textContent =
+      registeredAt
+        ? `Status: ${status} • Registered: ${registeredAt}`
+        : `Status: ${status}`;
+
+    const actions =
+      document.createElement(
+        "div"
+      );
+
+    actions.className =
+      "racaal-telegram-group-actions";
+
+    const manageButton =
+      document.createElement(
+        "button"
+      );
+
+    manageButton.type =
+      "button";
+
+    manageButton.className =
+      "racaal-manage-group-button";
+
+    manageButton.textContent =
+      "Manage";
+
+    manageButton.addEventListener(
+      "click",
+      () => {
+
+        openTelegramGroup(
+          id
+        );
+
+      }
+    );
+
+    actions.appendChild(
+      manageButton
+    );
+
+    card.appendChild(
+      title
+    );
+
+    card.appendChild(
+      idElement
+    );
+
+    card.appendChild(
+      statusElement
+    );
+
+    card.appendChild(
+      actions
+    );
+
+    container.appendChild(
+      card
+    );
+
+  });
+}
+
+
+/* =========================================================
+   OPEN / MANAGE TELEGRAM GROUP
+========================================================= */
+
+function openTelegramGroup(
+  selectedGroupId
+) {
+
+  if (!selectedGroupId) {
+
+    showMessage(
+      "The selected Telegram group does not have a valid Group ID.",
+      true
+    );
+
+    return;
+  }
+
+  const newUrl =
+    `${window.location.pathname}` +
+    `?group_id=` +
+    encodeURIComponent(
+      selectedGroupId
+    );
+
+  /*
+  Use normal navigation so the whole Control Center
+  initializes cleanly with the selected group.
+  */
+
+  window.location.href =
+    newUrl;
+}
+
+
+/* =========================================================
+   LOAD MY TELEGRAM GROUPS
+========================================================= */
+
+async function loadTelegramGroups() {
+
+  if (isLoadingTelegramGroups) {
+
+    return;
+  }
+
+  isLoadingTelegramGroups = true;
+
+  ensureTelegramGroupsStyles();
+
+  const container =
+    getTelegramGroupsContainer();
+
+  container.innerHTML =
+    "";
+
+  const loading =
+    document.createElement(
+      "div"
+    );
+
+  loading.className =
+    "racaal-telegram-loading";
+
+  loading.textContent =
+    "Loading Telegram groups...";
+
+  container.appendChild(
+    loading
+  );
+
+  try {
+
+    const data =
+      await apiRequest(
+        "/control/telegram/groups"
+      );
+
+    console.log(
+      "RACAAL TELEGRAM GROUPS:",
+      data
+    );
+
+    const groups =
+      normalizeTelegramGroups(
+        data
+      );
+
+    renderTelegramGroups(
+      groups
+    );
+
+    console.log(
+      `RACAAL: ${groups.length} Telegram group(s) loaded.`
+    );
+
+    return groups;
+
+  } catch (error) {
+
+    console.error(
+      "LOAD TELEGRAM GROUPS ERROR:",
+      error
+    );
+
+    container.innerHTML =
+      "";
+
+    const errorBox =
+      document.createElement(
+        "div"
+      );
+
+    errorBox.className =
+      "racaal-telegram-empty";
+
+    errorBox.textContent =
+      `Could not load Telegram groups: ${error.message}`;
+
+    container.appendChild(
+      errorBox
+    );
+
+    showMessage(
+      `Could not load Telegram groups: ${error.message}`,
+      true
+    );
+
+    return [];
+
+  } finally {
+
+    isLoadingTelegramGroups =
+      false;
+  }
+}
+
+
+/* =========================================================
+   TELEGRAM GROUP LIST HEADER / REFRESH
+========================================================= */
+
+function createTelegramGroupsRefreshButton() {
+
+  if (
+    document.getElementById(
+      "refreshTelegramGroups"
+    )
+  ) {
+
+    return;
+  }
+
+  const button =
+    document.createElement(
+      "button"
+    );
+
+  button.id =
+    "refreshTelegramGroups";
+
+  button.type =
+    "button";
+
+  button.className =
+    "racaal-refresh-groups-button";
+
+  button.textContent =
+    "Refresh Groups";
+
+  button.addEventListener(
+    "click",
+    async () => {
+
+      setButtonBusy(
+        button,
+        true,
+        "Refreshing..."
+      );
+
+      await loadTelegramGroups();
+
+      setButtonBusy(
+        button,
+        false
+      );
+    }
+  );
+
+  const container =
+    getTelegramGroupsContainer();
+
+  /*
+  Place refresh button immediately before
+  the group cards.
+  */
+
+  container.parentNode?.insertBefore(
+    button,
+    container
+  );
+}
+
+
+/* =========================================================
    LOAD GROUP SETTINGS
 ========================================================= */
 
 async function loadGroupSettings() {
 
   if (isLoading) {
+
     return;
   }
 
@@ -436,7 +1127,9 @@ async function loadGroupSettings() {
       `/settings`;
 
     const data =
-      await apiRequest(url);
+      await apiRequest(
+        url
+      );
 
     if (!data.settings) {
 
@@ -487,6 +1180,7 @@ async function loadGroupSettings() {
 async function saveGroupSettings() {
 
   if (isSaving) {
+
     return;
   }
 
@@ -583,397 +1277,3 @@ async function saveGroupSettings() {
     );
   }
 }
-
-
-/* =========================================================
-   TELEGRAM STATUS
-========================================================= */
-
-function updateTelegramStatus(text) {
-
-  const statusText =
-    document.getElementById(
-      "telegramStatusText"
-    );
-
-  if (statusText) {
-
-    statusText.textContent =
-      text;
-  }
-}
-
-
-/* =========================================================
-   TELEGRAM GROUP REGISTRATION
-========================================================= */
-
-/*
-IMPORTANT:
-
-This frontend is prepared for the Telegram registration
-API, but the actual registration authority belongs in the
-backend.
-
-The backend must eventually verify:
-
-1. Telegram group ID
-2. Telegram bot membership
-3. Bot permissions
-4. Customer/account ownership
-5. Super Admin rules
-6. Existing group registration
-7. Subscription/trial permissions
-
-The browser must NOT decide those things by itself.
-*/
-
-async function registerTelegramGroup() {
-
-  const button =
-    document.getElementById(
-      "connectTelegram"
-    );
-
-  const input =
-    document.getElementById(
-      "telegramGroupId"
-    );
-
-  if (!input) {
-
-    showMessage(
-      "Telegram Group ID field was not found.",
-      true
-    );
-
-    return;
-  }
-
-  const enteredGroupId =
-    input.value.trim();
-
-  if (!enteredGroupId) {
-
-    showMessage(
-      "Enter the Telegram Group ID before registering the group.",
-      true
-    );
-
-    return;
-  }
-
-  /*
-  Telegram supergroup IDs normally begin with -100.
-  We do not invent an ID. We only perform a basic format
-  check here. Final verification belongs to the backend.
-  */
-
-  if (
-    !/^-?\d+$/.test(
-      enteredGroupId
-    )
-  ) {
-
-    showMessage(
-      "The Telegram Group ID must be a valid numeric Telegram ID.",
-      true
-    );
-
-    return;
-  }
-
-  setButtonBusy(
-    button,
-    true,
-    "Registering..."
-  );
-
-  updateTelegramStatus(
-    "Registering Telegram group..."
-  );
-
-  try {
-
-    /*
-    This endpoint will be implemented in the RACAAL
-    Control backend.
-
-    The backend—not this JavaScript—will perform the
-    secure registration and verification.
-    */
-
-    const data =
-      await apiRequest(
-        "/control/telegram/register",
-        {
-          method: "POST",
-
-          body: JSON.stringify({
-            group_id:
-              enteredGroupId
-          })
-        }
-      );
-
-    const registeredGroupId =
-      data.group_id ||
-      enteredGroupId;
-
-    updateTelegramStatus(
-      data.message ||
-      "Telegram group registered successfully."
-    );
-
-    showMessage(
-      `Telegram group ${registeredGroupId} is registered.`
-    );
-
-    /*
-    If the backend returns the canonical group ID,
-    update the browser URL so the Control Center opens
-    directly for that group.
-    */
-
-    if (
-      registeredGroupId &&
-      registeredGroupId !== groupId
-    ) {
-
-      const newUrl =
-        `${window.location.pathname}` +
-        `?group_id=` +
-        encodeURIComponent(
-          registeredGroupId
-        );
-
-      window.history.replaceState(
-        {},
-        "",
-        newUrl
-      );
-
-      /*
-      Reload the group's settings using the newly
-      registered ID without forcing a full page reload.
-      */
-
-      await loadGroupSettings();
-    }
-
-  } catch (error) {
-
-    console.error(
-      "TELEGRAM REGISTRATION ERROR:",
-      error
-    );
-
-    updateTelegramStatus(
-      "Telegram registration could not be completed."
-    );
-
-    showMessage(
-      `Telegram registration failed: ${error.message}`,
-      true
-    );
-
-  } finally {
-
-    setButtonBusy(
-      button,
-      false
-    );
-  }
-}
-
-
-/* =========================================================
-   API HEALTH CHECK
-========================================================= */
-
-async function checkControlApi() {
-
-  try {
-
-    const data =
-      await apiRequest(
-        "/health"
-      );
-
-    console.log(
-      "RACAAL CONTROL API HEALTH:",
-      data
-    );
-
-    return data;
-
-  } catch (error) {
-
-    console.error(
-      "RACAAL CONTROL API HEALTH ERROR:",
-      error
-    );
-
-    return null;
-  }
-}
-
-
-/* =========================================================
-   FUTURE CENTRAL PLATFORM CONTROL INTERFACE
-========================================================= */
-
-/*
-These functions establish the frontend structure for the
-future RACAAL platform.
-
-They intentionally do NOT contain business rules.
-
-Future backend areas can include:
-
-/control/platform
-/control/super-admin
-/control/customers
-/control/groups
-/control/telegram
-/control/whatsapp
-/control/facebook
-/control/website
-/control/modules
-/control/subscriptions
-/control/payments
-/control/analytics
-/control/white-label
-/control/ai
-/control/security
-
-The frontend can later call those secure endpoints.
-*/
-
-
-async function getPlatformStatus() {
-
-  return apiRequest(
-    "/control/platform/status"
-  );
-}
-
-
-async function getCurrentAccount() {
-
-  return apiRequest(
-    "/control/account"
-  );
-}
-
-
-async function getMyPermissions() {
-
-  return apiRequest(
-    "/control/permissions"
-  );
-}
-
-
-/* =========================================================
-   EVENT HANDLERS
-========================================================= */
-
-const saveTop =
-  document.getElementById(
-    "saveTop"
-  );
-
-if (saveTop) {
-
-  saveTop.addEventListener(
-    "click",
-    saveGroupSettings
-  );
-}
-
-
-const saveBottom =
-  document.getElementById(
-    "saveBottom"
-  );
-
-if (saveBottom) {
-
-  saveBottom.addEventListener(
-    "click",
-    saveGroupSettings
-  );
-}
-
-
-const connectTelegram =
-  document.getElementById(
-    "connectTelegram"
-  );
-
-if (connectTelegram) {
-
-  connectTelegram.addEventListener(
-    "click",
-    registerTelegramGroup
-  );
-}
-
-
-/* =========================================================
-   STARTUP
-========================================================= */
-
-async function initializeControlCenter() {
-
-  console.log(
-    "========================================"
-  );
-
-  console.log(
-    "RACAAL AI CONTROL CENTER"
-  );
-
-  console.log(
-    "Group:",
-    groupId
-  );
-
-  console.log(
-    "API:",
-    API_BASE
-  );
-
-  console.log(
-    "========================================"
-  );
-
-  updateGroupDisplay();
-
-  /*
-  Check the API first.
-  This does not expose any secret credentials.
-  */
-
-  const health =
-    await checkControlApi();
-
-  if (!health) {
-
-    showMessage(
-      "RACAAL Control API is not responding.",
-      true
-    );
-
-  }
-
-  /*
-  Load the selected group's persistent settings.
-  */
-
-  await loadGroupSettings();
-}
-
-
-initializeControlCenter();
