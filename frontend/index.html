@@ -6,6 +6,7 @@
   <title>Racaal AI Control Center</title>
   <link rel="stylesheet" href="control-center.css">
 </head>
+
 <body>
 
 <header class="topbar">
@@ -13,380 +14,886 @@
     <div class="brand">RACAAL</div>
     <div class="subtitle">AI Group Control Center</div>
   </div>
-  <div class="status"><span></span> Control Center</div>
+
+  <div class="status">
+    <span></span>
+    Control Center
+  </div>
 </header>
+
 
 <main class="page">
 
+
+  <!-- ======================================================
+       TELEGRAM GROUP
+       ====================================================== -->
+
   <section class="group-card">
+
     <div>
       <small>TELEGRAM GROUP</small>
+
       <h1 id="groupName">Demo Group</h1>
-      <p id="groupId">Group configuration</p>
+
+      <p id="groupId">
+        Group ID: demo-group
+      </p>
     </div>
-    <button class="primary" id="saveTop">Save</button>
+
+    <button class="primary" id="saveTop">
+      Save
+    </button>
+
   </section>
+
+
+  <!-- ======================================================
+       TELEGRAM GROUP CONNECTION
+       ====================================================== -->
+
+  <section class="section-card telegram-connect">
+
+    <div class="section-title">
+
+      <span>📱</span>
+
+      <div>
+        <h2>Connect Telegram Group</h2>
+
+        <p>
+          Connect your Telegram group to RACAAL AI so the group can
+          use its own settings, AI features and management tools.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="connection-box">
+
+      <h3>How to connect your group</h3>
+
+      <ol>
+
+        <li>
+          Add the RACAAL Telegram bot to your Telegram group.
+        </li>
+
+        <li>
+          Give the bot the administrator permissions it needs
+          to manage the enabled group features.
+        </li>
+
+        <li>
+          Return to this Control Center after the bot has joined.
+        </li>
+
+        <li>
+          The Telegram group will then be registered with its
+          own group ID and settings.
+        </li>
+
+        <li>
+          Once registered, all settings below will belong only
+          to that Telegram group.
+        </li>
+
+      </ol>
+
+
+      <div class="connection-note">
+
+        <strong>Important:</strong>
+
+        <span>
+          Each Telegram group must have its own configuration.
+          Do not share one group's settings with another group.
+        </span>
+
+      </div>
+
+
+      <div class="telegram-status" id="telegramStatus">
+
+        <strong>Connection status:</strong>
+
+        <span id="telegramStatusText">
+          Waiting for Telegram group registration
+        </span>
+
+      </div>
+
+
+      <div class="group-registration">
+
+        <label>
+          Telegram Group ID
+          <input
+            id="telegramGroupId"
+            type="text"
+            placeholder="Example: -1001234567890"
+            autocomplete="off"
+          >
+        </label>
+
+        <p class="help-text">
+          The Telegram Group ID is normally provided automatically
+          when the Telegram bot registers the group. Do not guess
+          or change the ID unless you know the correct Telegram ID.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="secondary"
+        id="connectTelegram"
+      >
+        Register Telegram Group
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================
+       MESSAGE
+       ====================================================== -->
 
   <div id="message" class="message" hidden></div>
 
+
+  <!-- ======================================================
+       AI ASSISTANT
+       ====================================================== -->
+
   <section class="section-card">
+
     <div class="section-title">
+
       <span>🤖</span>
+
       <div>
         <h2>AI Assistant</h2>
         <p>How the AI behaves in this group.</p>
       </div>
+
     </div>
 
+
     <div class="grid">
+
       <label class="toggle">
         <span>AI enabled</span>
-        <input type="checkbox" data-path="ai.enabled" checked>
+        <input
+          type="checkbox"
+          data-path="ai.enabled"
+          checked
+        >
       </label>
+
 
       <label>
         Assistant name
-        <input data-path="ai.assistant_name" value="Racaal AI">
+
+        <input
+          data-path="ai.assistant_name"
+          value="Racaal AI"
+        >
       </label>
+
 
       <label>
         Response style
+
         <select data-path="ai.response_style">
+
           <option>friendly</option>
           <option>professional</option>
           <option>concise</option>
           <option>teaching</option>
+
         </select>
+
       </label>
+
 
       <label>
         Language
+
         <select data-path="ai.language">
+
           <option>English</option>
           <option>Swahili</option>
           <option>Luganda</option>
           <option>French</option>
+
         </select>
+
       </label>
+
 
       <label>
         Who can ask
+
         <select data-path="ai.who_can_ask">
+
           <option>everyone</option>
           <option>members</option>
           <option>admins</option>
+
         </select>
+
       </label>
+
 
       <label>
         Response length
+
         <select data-path="ai.response_length">
+
           <option>short</option>
           <option selected>medium</option>
           <option>long</option>
+
         </select>
+
       </label>
+
 
       <label class="toggle">
+
         <span>Typing indicator</span>
-        <input type="checkbox" data-path="ai.typing_indicator" checked>
+
+        <input
+          type="checkbox"
+          data-path="ai.typing_indicator"
+          checked
+        >
+
       </label>
+
     </div>
+
   </section>
 
+
+  <!-- ======================================================
+       PROMPTS & KNOWLEDGE
+       ====================================================== -->
+
   <section class="section-card">
+
     <div class="section-title">
+
       <span>📚</span>
+
       <div>
         <h2>Prompts & Knowledge</h2>
-        <p>Customize what the AI knows and how it reasons.</p>
+        <p>Customize what the AI knows and how it responds.</p>
       </div>
+
     </div>
+
 
     <div class="grid">
+
       <label class="toggle">
+
         <span>Bible mode</span>
-        <input type="checkbox" data-path="knowledge.bible_mode" checked>
+
+        <input
+          type="checkbox"
+          data-path="knowledge.bible_mode"
+          checked
+        >
+
       </label>
 
+
       <label class="toggle">
+
         <span>General knowledge</span>
-        <input type="checkbox" data-path="knowledge.general_knowledge" checked>
+
+        <input
+          type="checkbox"
+          data-path="knowledge.general_knowledge"
+          checked
+        >
+
       </label>
 
+
       <label class="toggle">
+
         <span>AI memory</span>
-        <input type="checkbox" data-path="knowledge.memory_enabled" checked>
+
+        <input
+          type="checkbox"
+          data-path="knowledge.memory_enabled"
+          checked
+        >
+
       </label>
 
+
       <label class="toggle">
+
         <span>Conversation history</span>
-        <input type="checkbox" data-path="knowledge.history_enabled" checked>
+
+        <input
+          type="checkbox"
+          data-path="knowledge.history_enabled"
+          checked
+        >
+
       </label>
+
 
       <label class="wide">
+
         Administrator instructions
+
         <textarea
           data-path="knowledge.system_instructions"
-          placeholder="Example: Answer Bible questions respectfully and give references."
+          placeholder="Example: Answer Bible questions respectfully and provide Bible references."
         ></textarea>
+
       </label>
+
 
       <label class="wide">
+
         Custom group knowledge
+
         <textarea
           data-path="knowledge.custom_knowledge"
-          placeholder="Information specific to this group..."
+          placeholder="Add information that is specific to this group..."
         ></textarea>
+
       </label>
+
     </div>
+
   </section>
 
+
+  <!-- ======================================================
+       PROTECTION
+       ====================================================== -->
+
   <section class="section-card">
+
     <div class="section-title">
+
       <span>🛡️</span>
+
       <div>
         <h2>Protection</h2>
         <p>Keep the group safe and manageable.</p>
       </div>
+
     </div>
+
 
     <div class="grid">
+
       <label class="toggle">
+
         <span>Anti-spam</span>
-        <input type="checkbox" data-path="protection.anti_spam" checked>
+
+        <input
+          type="checkbox"
+          data-path="protection.anti_spam"
+          checked
+        >
+
       </label>
 
+
       <label class="toggle">
+
         <span>Anti-flood</span>
-        <input type="checkbox" data-path="protection.anti_flood" checked>
+
+        <input
+          type="checkbox"
+          data-path="protection.anti_flood"
+          checked
+        >
+
       </label>
 
+
       <label class="toggle">
+
         <span>CAPTCHA</span>
-        <input type="checkbox" data-path="protection.captcha">
+
+        <input
+          type="checkbox"
+          data-path="protection.captcha"
+        >
+
       </label>
+
 
       <label>
+
         Message limit
-        <input type="number" min="1" max="100"
-               data-path="protection.message_limit" value="10">
+
+        <input
+          type="number"
+          min="1"
+          max="100"
+          data-path="protection.message_limit"
+          value="10"
+        >
+
       </label>
 
+
       <label class="wide">
+
         Blacklist (one item per line)
-        <textarea data-path="protection.blacklist"></textarea>
+
+        <textarea
+          data-path="protection.blacklist"
+        ></textarea>
+
       </label>
 
+
       <label class="wide">
+
         Whitelist (one item per line)
-        <textarea data-path="protection.whitelist"></textarea>
+
+        <textarea
+          data-path="protection.whitelist"
+        ></textarea>
+
       </label>
+
     </div>
+
   </section>
 
+
+  <!-- ======================================================
+       MANAGEMENT
+       ====================================================== -->
+
   <section class="section-card">
+
     <div class="section-title">
+
       <span>⚙️</span>
+
       <div>
         <h2>Management</h2>
         <p>Commands, moderation and member services.</p>
       </div>
+
     </div>
 
+
     <div class="grid">
+
       <label class="toggle">
         <span>Commands</span>
-        <input type="checkbox" data-path="management.commands_enabled" checked>
+        <input
+          type="checkbox"
+          data-path="management.commands_enabled"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Moderation commands</span>
-        <input type="checkbox" data-path="management.moderation_commands" checked>
+        <input
+          type="checkbox"
+          data-path="management.moderation_commands"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Welcome messages</span>
-        <input type="checkbox" data-path="management.welcome_messages" checked>
+        <input
+          type="checkbox"
+          data-path="management.welcome_messages"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Rules</span>
-        <input type="checkbox" data-path="management.rules_enabled" checked>
+        <input
+          type="checkbox"
+          data-path="management.rules_enabled"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Support mode</span>
-        <input type="checkbox" data-path="management.support_mode" checked>
+        <input
+          type="checkbox"
+          data-path="management.support_mode"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Service messages</span>
-        <input type="checkbox" data-path="management.service_messages" checked>
+        <input
+          type="checkbox"
+          data-path="management.service_messages"
+          checked
+        >
       </label>
+
     </div>
+
   </section>
 
+
+  <!-- ======================================================
+       CONTENT & AUTOMATION
+       ====================================================== -->
+
   <section class="section-card">
+
     <div class="section-title">
+
       <span>📢</span>
+
       <div>
         <h2>Content & Automation</h2>
         <p>Schedule and publish group content.</p>
       </div>
+
     </div>
 
+
     <div class="grid">
+
       <label class="toggle">
         <span>Announcements</span>
-        <input type="checkbox" data-path="automation.announcements" checked>
+        <input
+          type="checkbox"
+          data-path="automation.announcements"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Scheduling</span>
-        <input type="checkbox" data-path="automation.scheduling" checked>
+        <input
+          type="checkbox"
+          data-path="automation.scheduling"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Post Wizard</span>
-        <input type="checkbox" data-path="automation.post_wizard" checked>
+        <input
+          type="checkbox"
+          data-path="automation.post_wizard"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Automatic Bible posts</span>
-        <input type="checkbox" data-path="automation.automatic_bible_posts">
+        <input
+          type="checkbox"
+          data-path="automation.automatic_bible_posts"
+        >
       </label>
+
 
       <label class="toggle">
         <span>Buttons</span>
-        <input type="checkbox" data-path="automation.buttons" checked>
+        <input
+          type="checkbox"
+          data-path="automation.buttons"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Comments</span>
-        <input type="checkbox" data-path="automation.comments" checked>
+        <input
+          type="checkbox"
+          data-path="automation.comments"
+          checked
+        >
       </label>
+
     </div>
+
   </section>
 
+
+  <!-- ======================================================
+       MEMBERS
+       ====================================================== -->
+
   <section class="section-card">
+
     <div class="section-title">
+
       <span>👥</span>
+
       <div>
         <h2>Members</h2>
         <p>Member activity, invitations and rewards.</p>
       </div>
+
     </div>
 
+
     <div class="grid">
+
       <label class="toggle">
         <span>Member tracking</span>
-        <input type="checkbox" data-path="members.member_tracking" checked>
+        <input
+          type="checkbox"
+          data-path="members.member_tracking"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Invitations</span>
-        <input type="checkbox" data-path="members.invitations" checked>
+        <input
+          type="checkbox"
+          data-path="members.invitations"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Referrals</span>
-        <input type="checkbox" data-path="members.referrals">
+        <input
+          type="checkbox"
+          data-path="members.referrals"
+        >
       </label>
+
 
       <label class="toggle">
         <span>Levels</span>
-        <input type="checkbox" data-path="members.levels">
+        <input
+          type="checkbox"
+          data-path="members.levels"
+        >
       </label>
+
 
       <label class="toggle">
         <span>Warnings</span>
-        <input type="checkbox" data-path="members.warnings" checked>
+        <input
+          type="checkbox"
+          data-path="members.warnings"
+          checked
+        >
       </label>
+
     </div>
+
   </section>
 
+
+  <!-- ======================================================
+       ANALYTICS
+       ====================================================== -->
+
   <section class="section-card">
+
     <div class="section-title">
+
       <span>📊</span>
+
       <div>
         <h2>Analytics</h2>
         <p>See what is happening in the group.</p>
       </div>
+
     </div>
 
+
     <div class="grid">
+
       <label class="toggle">
         <span>Chat statistics</span>
-        <input type="checkbox" data-path="analytics.chat_statistics" checked>
+        <input
+          type="checkbox"
+          data-path="analytics.chat_statistics"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>AI usage</span>
-        <input type="checkbox" data-path="analytics.ai_usage" checked>
+        <input
+          type="checkbox"
+          data-path="analytics.ai_usage"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Event log</span>
-        <input type="checkbox" data-path="analytics.event_log" checked>
+        <input
+          type="checkbox"
+          data-path="analytics.event_log"
+          checked
+        >
       </label>
+
 
       <label class="toggle">
         <span>Reports</span>
-        <input type="checkbox" data-path="analytics.reports" checked>
+        <input
+          type="checkbox"
+          data-path="analytics.reports"
+          checked
+        >
       </label>
+
     </div>
+
   </section>
 
+
+  <!-- ======================================================
+       PREMIUM & TRIAL
+       ====================================================== -->
+
   <section class="section-card premium">
+
     <div class="section-title">
+
       <span>💳</span>
+
       <div>
         <h2>Premium & Trial</h2>
         <p>Subscription controls are part of the architecture.</p>
       </div>
+
     </div>
 
+
     <div class="grid">
+
       <label>
+
         Plan
+
         <select data-path="subscription.plan">
-          <option value="trial">30-day trial</option>
-          <option value="free">Free</option>
-          <option value="premium">Premium</option>
+
+          <option value="trial">
+            30-day trial
+          </option>
+
+          <option value="free">
+            Free
+          </option>
+
+          <option value="premium">
+            Premium
+          </option>
+
         </select>
+
       </label>
+
 
       <label class="toggle">
+
         <span>Trial enabled</span>
-        <input type="checkbox" data-path="subscription.trial_enabled" checked>
+
+        <input
+          type="checkbox"
+          data-path="subscription.trial_enabled"
+          checked
+        >
+
       </label>
 
+
       <label>
+
         Trial days
-        <input type="number" min="1" max="365"
-               data-path="subscription.trial_days" value="30">
+
+        <input
+          type="number"
+          min="1"
+          max="365"
+          data-path="subscription.trial_days"
+          value="30"
+        >
+
       </label>
 
+
       <label>
+
         Status
+
         <select data-path="subscription.status">
+
           <option>trial</option>
           <option>active</option>
           <option>expired</option>
           <option>disabled</option>
+
         </select>
+
       </label>
+
     </div>
+
   </section>
 
-  <button class="save-bottom" id="saveBottom">
+
+  <!-- ======================================================
+       SAVE
+       ====================================================== -->
+
+  <button
+    class="save-bottom"
+    id="saveBottom"
+  >
     Save Group Settings
   </button>
 
+
 </main>
+
+
+<!-- ========================================================
+     EXISTING CONTROL CENTER JAVASCRIPT
+     ======================================================== -->
 
 <script src="control-center.js"></script>
 
 </body>
-        </html>
+            </html>
