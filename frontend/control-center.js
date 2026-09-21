@@ -1277,3 +1277,358 @@ async function saveGroupSettings() {
     );
   }
 }
+
+
+/* =========================================================
+   TELEGRAM STATUS
+========================================================= */
+
+function updateTelegramStatus(text) {
+
+  const statusText =
+    document.getElementById(
+      "telegramStatusText"
+    );
+
+  if (statusText) {
+
+    statusText.textContent =
+      text;
+  }
+}
+
+
+/* =========================================================
+   TELEGRAM GROUP REGISTRATION
+========================================================= */
+
+async function registerTelegramGroup() {
+
+  const button =
+    document.getElementById(
+      "connectTelegram"
+    );
+
+  const input =
+    document.getElementById(
+      "telegramGroupId"
+    );
+
+  if (!input) {
+
+    showMessage(
+      "Telegram Group ID field was not found.",
+      true
+    );
+
+    return;
+  }
+
+  const enteredGroupId =
+    input.value.trim();
+
+  if (!enteredGroupId) {
+
+    showMessage(
+      "Enter the Telegram Group ID before registering the group.",
+      true
+    );
+
+    return;
+  }
+
+  /*
+  Basic frontend format validation only.
+  Final verification belongs to the backend.
+  */
+
+  if (
+    !/^-?\d+$/.test(
+      enteredGroupId
+    )
+  ) {
+
+    showMessage(
+      "The Telegram Group ID must be a valid numeric Telegram ID.",
+      true
+    );
+
+    return;
+  }
+
+  setButtonBusy(
+    button,
+    true,
+    "Registering..."
+  );
+
+  updateTelegramStatus(
+    "Registering Telegram group..."
+  );
+
+  try {
+
+    const data =
+      await apiRequest(
+        "/control/telegram/register",
+        {
+          method: "POST",
+
+          body: JSON.stringify({
+            group_id:
+              enteredGroupId
+          })
+        }
+      );
+
+    const registeredGroupId =
+      data.group_id ||
+      data.telegram_group_id ||
+      enteredGroupId;
+
+    updateTelegramStatus(
+      data.message ||
+      "Telegram group registered successfully."
+    );
+
+    showMessage(
+      `Telegram group ${registeredGroupId} is registered.`
+    );
+
+    /*
+    Refresh My Telegram Groups immediately after
+    successful registration.
+    */
+
+    await loadTelegramGroups();
+
+    /*
+    If the backend returns the canonical group ID,
+    or the entered ID is different from the current
+    page group, update the URL.
+    */
+
+    if (
+      registeredGroupId &&
+      registeredGroupId !== groupId
+    ) {
+
+      const newUrl =
+        `${window.location.pathname}` +
+        `?group_id=` +
+        encodeURIComponent(
+          registeredGroupId
+        );
+
+      window.history.replaceState(
+        {},
+        "",
+        newUrl
+      );
+
+      /*
+      Reload the selected group's settings.
+      */
+
+      await loadGroupSettings();
+    }
+
+  } catch (error) {
+
+    console.error(
+      "TELEGRAM REGISTRATION ERROR:",
+      error
+    );
+
+    updateTelegramStatus(
+      "Telegram registration could not be completed."
+    );
+
+    showMessage(
+      `Telegram registration failed: ${error.message}`,
+      true
+    );
+
+  } finally {
+
+    setButtonBusy(
+      button,
+      false
+    );
+  }
+}
+
+
+/* =========================================================
+   API HEALTH CHECK
+========================================================= */
+
+async function checkControlApi() {
+
+  try {
+
+    const data =
+      await apiRequest(
+        "/health"
+      );
+
+    console.log(
+      "RACAAL CONTROL API HEALTH:",
+      data
+    );
+
+    return data;
+
+  } catch (error) {
+
+    console.error(
+      "RACAAL CONTROL API HEALTH ERROR:",
+      error
+    );
+
+    return null;
+  }
+}
+
+
+/* =========================================================
+   FUTURE CENTRAL PLATFORM CONTROL INTERFACE
+========================================================= */
+
+async function getPlatformStatus() {
+
+  return apiRequest(
+    "/control/platform/status"
+  );
+}
+
+
+async function getCurrentAccount() {
+
+  return apiRequest(
+    "/control/account"
+  );
+}
+
+
+async function getMyPermissions() {
+
+  return apiRequest(
+    "/control/permissions"
+  );
+}
+
+
+/* =========================================================
+   EVENT HANDLERS
+========================================================= */
+
+const saveTop =
+  document.getElementById(
+    "saveTop"
+  );
+
+if (saveTop) {
+
+  saveTop.addEventListener(
+    "click",
+    saveGroupSettings
+  );
+}
+
+
+const saveBottom =
+  document.getElementById(
+    "saveBottom"
+  );
+
+if (saveBottom) {
+
+  saveBottom.addEventListener(
+    "click",
+    saveGroupSettings
+  );
+}
+
+
+const connectTelegram =
+  document.getElementById(
+    "connectTelegram"
+  );
+
+if (connectTelegram) {
+
+  connectTelegram.addEventListener(
+    "click",
+    registerTelegramGroup
+  );
+}
+
+
+/* =========================================================
+   STARTUP
+========================================================= */
+
+async function initializeControlCenter() {
+
+  console.log(
+    "========================================"
+  );
+
+  console.log(
+    "RACAAL AI CONTROL CENTER"
+  );
+
+  console.log(
+    "Group:",
+    groupId
+  );
+
+  console.log(
+    "API:",
+    API_BASE
+  );
+
+  console.log(
+    "========================================"
+  );
+
+  updateGroupDisplay();
+
+  /*
+  Check the API first.
+  */
+
+  const health =
+    await checkControlApi();
+
+  if (!health) {
+
+    showMessage(
+      "RACAAL Control API is not responding.",
+      true
+    );
+
+  }
+
+  /*
+  Load the Telegram groups list.
+  */
+
+  await loadTelegramGroups();
+
+  /*
+  Add the refresh control.
+  */
+
+  createTelegramGroupsRefreshButton();
+
+  /*
+  Load the selected group's persistent settings.
+  */
+
+  await loadGroupSettings();
+}
+
+
+initializeControlCenter();
