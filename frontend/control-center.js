@@ -1593,6 +1593,34 @@ async function initializeControlCenter() {
     "========================================"
   );
 
+    /*
+  =========================================================
+     VERIFIED TELEGRAM GROUP CHECK
+  =========================================================
+
+  The Telegram bot discovers the group automatically.
+
+  The administrator must NOT manually enter a Group ID.
+
+  The secure setup page passes the verified Group ID
+  to the Control Center.
+  =========================================================
+  */
+
+  if (!groupId) {
+
+    console.warn(
+      "RACAAL Control Center opened without a verified Telegram group."
+    );
+
+    showMessage(
+      "No Telegram group has been selected. Please open the secure setup link sent by the RACAAL Telegram bot.",
+      true
+    );
+
+    return;
+  }
+
   updateGroupDisplay();
 
   /*
