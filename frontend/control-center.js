@@ -38,9 +38,23 @@ RACAAL Modules
 
 const params = new URLSearchParams(window.location.search);
 
+/*
+===========================================================
+RACAAL GROUP CONTEXT
+===========================================================
+
+The Control Center dashboard receives the verified
+Telegram Group ID from the secure setup page.
+
+The setup page itself handles the temporary token.
+
+The dashboard does NOT accept a setup token.
+===========================================================
+*/
+
 const groupId =
   params.get("group_id") ||
-  "demo-group";
+  null;
 
 const messageBox =
   document.getElementById("message");
