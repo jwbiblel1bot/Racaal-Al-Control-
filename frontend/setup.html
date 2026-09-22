@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>RACAAL Telegram Setup</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 24px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f4f7fb,
+          #e9eef7
+        );
+
+      color: #172033;
+    }
+
+    .setup-card {
+      width: 100%;
+      max-width: 520px;
+
+      background: #ffffff;
+
+      border-radius: 20px;
+
+      padding: 32px;
+
+      box-shadow:
+        0 15px 45px
+        rgba(0, 0, 0, 0.10);
+
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 2px;
+
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #697386;
+      font-size: 14px;
+
+      margin-bottom: 28px;
+    }
+
+    .status-icon {
+      width: 64px;
+      height: 64px;
+
+      margin: 0 auto 20px;
+
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #eef3ff;
+
+      font-size: 28px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+
+      font-size: 23px;
+    }
+
+    .message {
+      color: #596579;
+      line-height: 1.6;
+
+      margin-bottom: 24px;
+    }
+
+    .group-box {
+      display: none;
+
+      text-align: left;
+
+      background: #f7f9fc;
+
+      border: 1px solid #e2e7ef;
+
+      border-radius: 14px;
+
+      padding: 18px;
+
+      margin-top: 20px;
+      margin-bottom: 24px;
+    }
+
+    .group-row {
+      margin-bottom: 12px;
+    }
+
+    .group-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .label {
+      display: block;
+
+      font-size: 12px;
+      color: #7b8494;
+
+      margin-bottom: 4px;
+    }
+
+    .value {
+      font-size: 15px;
+      font-weight: 600;
+
+      word-break: break-word;
+    }
+
+    .button {
+      display: none;
+
+      width: 100%;
+
+      border: 0;
+
+      border-radius: 12px;
+
+      padding: 14px 18px;
+
+      font-size: 15px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      background: #172033;
+      color: #ffffff;
+    }
+
+    .button:hover {
+      opacity: 0.92;
+    }
+
+    .error {
+      display: none;
+
+      background: #fff1f1;
+
+      border: 1px solid #f2caca;
+
+      color: #a12a2a;
+
+      border-radius: 12px;
+
+      padding: 14px;
+
+      line-height: 1.5;
+
+      margin-top: 20px;
+    }
+
+    .small {
+      margin-top: 20px;
+
+      font-size: 12px;
+
+      color: #8a93a3;
+
+      line-height: 1.5;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="setup-card">
+
+    <div class="logo">
+      RACAAL
+    </div>
+
+    <div class="subtitle">
+      AI Telegram Control Center
+    </div>
+
+    <div
+      id="statusIcon"
+      class="status-icon"
+    >
+      ⏳
+    </div>
+
+    <h1 id="title">
+      Verifying Telegram setup
+    </h1>
+
+    <div
+      id="message"
+      class="message"
+    >
+      Please wait while RACAAL securely verifies your Telegram setup link.
+    </div>
+
+    <div
+      id="groupBox"
+      class="group-box"
+    >
+
+      <div class="group-row">
+
+        <span class="label">
+          Telegram Group
+        </span>
+
+        <span
+          id="groupName"
+          class="value"
+        >
+          —
+        </span>
+
+      </div>
+
+      <div class="group-row">
+
+        <span class="label">
+          Group ID
+        </span>
+
+        <span
+          id="groupId"
+          class="value"
+        >
+          —
+        </span>
+
+      </div>
+
+      <div class="group-row">
+
+        <span class="label">
+          Bot Status
+        </span>
+
+        <span
+          id="botStatus"
+          class="value"
+        >
+          —
+        </span>
+
+      </div>
+
+      <div class="group-row">
+
+        <span class="label">
+          Administrator Status
+        </span>
+
+        <span
+          id="adminStatus"
+          class="value"
+        >
+          —
+        </span>
+
+      </div>
+
+    </div>
+
+    <button
+      id="continueButton"
+      class="button"
+      type="button"
+    >
+      Open Control Center
+    </button>
+
+    <div
+      id="errorBox"
+      class="error"
+    >
+    </div>
+
+    <div class="small">
+      This setup link is temporary and can only be used through the
+      secure RACAAL Telegram setup process.
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const API_BASE =
+      "https://racaal-al-control.onrender.com";
+
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const token =
+      params.get("token");
+
+
+    const title =
+      document.getElementById(
+        "title"
+      );
+
+
+    const message =
+      document.getElementById(
+        "message"
+      );
+
+
+    const statusIcon =
+      document.getElementById(
+        "statusIcon"
+      );
+
+
+    const groupBox =
+      document.getElementById(
+        "groupBox"
+      );
+
+
+    const groupName =
+      document.getElementById(
+        "groupName"
+      );
+
+
+    const groupId =
+      document.getElementById(
+        "groupId"
+      );
+
+
+    const botStatus =
+      document.getElementById(
+        "botStatus"
+      );
+
+
+    const adminStatus =
+      document.getElementById(
+        "adminStatus"
+      );
+
+
+    const continueButton =
+      document.getElementById(
+        "continueButton"
+      );
+
+
+    const errorBox =
+      document.getElementById(
+        "errorBox"
+      );
+
+
+    let verifiedGroupId =
+      null;
+
+
+    function showError(text) {
+
+      statusIcon.textContent =
+        "⚠️";
+
+      title.textContent =
+        "Setup could not be verified";
+
+      message.textContent =
+        "RACAAL could not verify this Telegram setup link.";
+
+      errorBox.textContent =
+        text;
+
+      errorBox.style.display =
+        "block";
+    }
+
+
+    async function verifySetupToken() {
+
+      if (!token) {
+
+        showError(
+          "No setup token was found in this link. Please ask the Telegram bot for a new setup link."
+        );
+
+        return;
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/control/setup/verify`,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body: JSON.stringify({
+                token: token
+              })
+            }
+          );
+
+
+        let data = null;
+
+
+        try {
+
+          data =
+            await response.json();
+
+        } catch {
+
+          data = null;
+        }
+
+
+        if (
+          !response.ok ||
+          !data ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data &&
+            (
+              data.message ||
+              data.error
+            )
+              ? (
+                  data.message ||
+                  data.error
+                )
+              : "The setup token is invalid, expired, or has already been used."
+          );
+        }
+
+
+        const group =
+          data.group || {};
+
+
+        verifiedGroupId =
+          group.group_id ||
+          group.telegram_group_id ||
+          null;
+
+
+        if (!verifiedGroupId) {
+
+          throw new Error(
+            "RACAAL verified the setup token, but no Telegram Group ID was returned."
+          );
+        }
+
+
+        groupName.textContent =
+          group.group_title ||
+          group.title ||
+          "Telegram Group";
+
+
+        groupId.textContent =
+          verifiedGroupId;
+
+
+        botStatus.textContent =
+          group.bot_connected
+            ? "Connected"
+            : "Not connected";
+
+
+        adminStatus.textContent =
+          group.bot_is_admin
+            ? "Administrator"
+            : "Not administrator";
+
+
+        groupBox.style.display =
+          "block";
+
+
+        statusIcon.textContent =
+          "✓";
+
+
+        title.textContent =
+          "Telegram group verified";
+
+
+        message.textContent =
+          "Your Telegram group has been securely verified. You can now open the RACAAL Control Center.";
+
+
+        continueButton.style.display =
+          "block";
+
+
+        /*
+        Keep the verified group ID only
+        for the next dashboard navigation.
+        */
+
+        continueButton.onclick =
+          function () {
+
+            const dashboardUrl =
+              "/control-center.html?group_id=" +
+              encodeURIComponent(
+                verifiedGroupId
+              );
+
+            window.location.href =
+              dashboardUrl;
+          };
+
+
+      } catch (error) {
+
+        console.error(
+          "RACAAL SETUP VERIFICATION ERROR:",
+          error
+        );
+
+
+        showError(
+          error.message ||
+          "The setup link could not be verified."
+        );
+      }
+    }
+
+
+    verifySetupToken();
+
+  </script>
+
+</body>
+      </html>
