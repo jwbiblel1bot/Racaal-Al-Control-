@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RACAAL Control Center Setup</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f7fb;margin:0;padding:24px;color:#172033}
+    .card{max-width:620px;margin:8vh auto;background:#fff;border-radius:18px;padding:28px;box-shadow:0 10px 35px rgba(0,0,0,.08)}
+    h1{margin-top:0}.status{padding:14px;border-radius:12px;background:#f0f3f8;margin:18px 0}
+    .ok{background:#eaf8ef}.error{background:#fff0f0}.muted{color:#667085}
+    button{border:0;border-radius:10px;padding:13px 18px;font-weight:700;cursor:pointer}
+    .primary{background:#111827;color:#fff}.hidden{display:none}
+    .group{font-size:16px;line-height:1.7}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>⚙️ RACAAL AI Control Center</h1>
+    <p class="muted">Secure Telegram administrator verification</p>
+    <div id="status" class="status">Checking your secure setup link…</div>
+    <div id="group" class="group hidden"></div>
+    <button id="open" class="primary hidden">Open RACAAL Control Center</button>
+  </main>
+
+<script>
+const API_BASE = "https://racaal-al-control.onrender.com";
+const token = new URLSearchParams(location.search).get("token");
+const statusBox = document.getElementById("status");
+const groupBox = document.getElementById("group");
+const openButton = document.getElementById("open");
+
+function showError(message){
+  statusBox.className = "status error";
+  statusBox.textContent = message;
+}
+
+async function verify(){
+  if(!token){
+    showError("No setup token was found in this link. Please open the private Control Center button sent by the RACAAL Telegram bot.");
+    return;
+  }
+
+  try{
+    const response = await fetch(API_BASE + "/control/setup/verify", {
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body:JSON.stringify({token})
+    });
+    const data = await response.json();
+
+    if(!response.ok || !data.success){
+      showError(data.error || "Setup could not be verified.");
+      return;
+    }
+
+    sessionStorage.setItem("racaal_control_session", data.session_token);
+
+    statusBox.className = "status ok";
+    statusBox.textContent = "✅ Telegram administrator verified. This group is now permanently linked to RACAAL Control Center.";
+
+    const group = data.group || {};
+    groupBox.classList.remove("hidden");
+    groupBox.innerHTML =
+      "<strong>Group:</strong> " + (group.group_title || "Telegram Group") +
+      "<br><strong>Group ID:</strong> " + data.group_id +
+      "<br><strong>Status:</strong> " + (group.connection_status || "connected");
+
+    openButton.classList.remove("hidden");
+    openButton.onclick = () => {
+      location.href = "/control-center.html?group_id=" + encodeURIComponent(data.group_id);
+    };
+  }catch(error){
+    showError("The RACAAL Control API could not be reached. Please try again.");
+    console.error(error);
+  }
+}
+
+verify();
+</script>
+</body>
+</html>
