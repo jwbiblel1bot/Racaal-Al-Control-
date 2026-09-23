@@ -209,7 +209,26 @@ def ensure_group(group_id):
 
 
 def session_from_request():
-    return request.headers.get("X-RACAAL-SESSION", "").strip()
+    """
+    Read the RACAAL Control Center session token.
+
+    Supports both:
+      X-RACAAL-SESSION: <token>
+    and:
+      Authorization: Bearer <token>
+    """
+    token = request.headers.get("X-RACAAL-SESSION", "").strip()
+
+    if token:
+        return token
+
+    authorization = request.headers.get("Authorization", "").strip()
+
+    if authorization.lower().startswith("bearer "):
+        token = authorization[7:].strip()
+        return token or None
+
+    return None
 
 
 def find_session(session_token):
