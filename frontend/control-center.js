@@ -126,6 +126,9 @@ async function createButton(data){requireGroup();const result=await apiRequest(g
 async function revokePermanentControlLink(){requireGroup();return apiRequest(groupPath("/control-link/revoke"),{method:"POST",body:JSON.stringify({})});}
 window.RACAAL={showMessage,saveCommentsConfig,createSchedule,sendBroadcast,scheduleBroadcast,createButton,revokePermanentControlLink,get sessionPermanent(){return sessionPermanent;},loadSchedules,loadButtons};
 
+function applyAppearance(theme,mode){const allowed=["blue","green","yellow","orange","indigo","purple","red"];const t=allowed.includes(theme)?theme:"blue",m=mode==="light"?"light":"dark";document.documentElement.dataset.theme=t;document.body.dataset.theme=t;document.documentElement.dataset.mode=m;document.body.dataset.mode=m;document.querySelectorAll("[data-theme-choice]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.themeChoice===t)));const s=document.getElementById("appearanceMode");if(s)s.value=m;try{localStorage.setItem("racaal_cc_theme",t);localStorage.setItem("racaal_cc_mode",m)}catch(_){}}
+function setupAppearance(){let t="blue",m="dark";try{t=localStorage.getItem("racaal_cc_theme")||t;m=localStorage.getItem("racaal_cc_mode")||m}catch(_){}applyAppearance(t,m);document.querySelectorAll("[data-theme-choice]").forEach(b=>b.addEventListener("click",()=>{let mode="dark";try{mode=localStorage.getItem("racaal_cc_mode")||mode}catch(_){}applyAppearance(b.dataset.themeChoice,mode)}));const s=document.getElementById("appearanceMode");if(s)s.addEventListener("change",()=>{let theme="blue";try{theme=localStorage.getItem("racaal_cc_theme")||theme}catch(_){}applyAppearance(theme,s.value)})}
+
 function setupHandlers(){
   ["saveTop","saveBottom"].forEach(id=>{const b=document.getElementById(id);if(b)b.addEventListener("click",()=>saveSettings(b).catch(e=>showMessage(e.message,true)));});
   const saveCommentsButton=document.getElementById("saveComments");if(saveCommentsButton)saveCommentsButton.addEventListener("click",async()=>{try{await saveCommentsConfig({enabled:document.getElementById("commentsEnabled")?.checked,text:document.getElementById("commentText")?.value,button_text:document.getElementById("commentButtonText")?.value,url:document.getElementById("commentUrl")?.value});}catch(e){showMessage(e.message,true);}});
@@ -151,8 +154,9 @@ function setupHandlers(){
 }
 async function init(){
   try{await verifyPermanentToken();}catch(e){showMessage(e.message,true);const status=document.getElementById("controlLinkStatus");if(status)status.textContent=e.message;return;}
-  updateGroupDisplay();setupHandlers();
+  updateGroupDisplay();setupAppearance();setupHandlers();
   if(!groupId||!controlSession){showMessage("Open the private Control Center link sent by the RACAAL bot to verify this group.",true);return;}
   try{await loadSettings();await Promise.all([loadGroups(),loadSchedules(),loadButtons()]);const status=document.getElementById("controlLinkStatus");if(status)status.textContent=sessionPermanent?"✓ Permanent Control Center session connected.":"✓ Control Center session connected.";}catch(e){showMessage(e.message,true);}
 }
 document.addEventListener("DOMContentLoaded",init);
+    
