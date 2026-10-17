@@ -251,3 +251,7 @@ hr { border: 0; border-top: 1px solid var(--cc-border); }
   .group-card { padding: 15px; }
   .section-title h2 { font-size: 17px; }
 }
+
+/* Appearance settings */
+body{min-height:100vh}.page{min-height:calc(100vh - 70px)}.theme-swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin:12px 0 16px}.theme-swatch{display:flex;align-items:center;gap:8px;min-height:46px;padding:9px 11px;border:1px solid var(--cc-border);border-radius:12px;color:var(--cc-text);background:var(--cc-card-alt);font-weight:650;text-align:left}.theme-swatch[aria-pressed="true"]{border:2px solid var(--cc-primary);box-shadow:0 0 0 3px var(--cc-focus)}.swatch-dot{width:18px;height:18px;display:inline-block;flex:0 0 18px;border-radius:50%}.swatch-dot.blue{background:#2563eb}.swatch-dot.green{background:#16a34a}.swatch-dot.yellow{background:#eab308}.swatch-dot.orange{background:#f97316}.swatch-dot.indigo{background:#6366f1}.swatch-dot.purple{background:#a855f7}.swatch-dot.red{background:#ef4444}.mode-toggle{max-width:320px}.bible-module-source{border:1px dashed var(--cc-border-strong);background:var(--cc-card-alt);color:var(--cc-text);padding:13px;border-radius:12px}.bible-module-source p{color:var(--cc-muted);margin:6px 0 0;font-size:13px}.secondary{border:1px solid var(--cc-border-strong);border-radius:12px;padding:10px 14px;background:var(--cc-card-alt);color:var(--cc-text);font-weight:700}
+   
